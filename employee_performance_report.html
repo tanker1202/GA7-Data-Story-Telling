@@ -13,6 +13,7 @@
 <h2>Python Code</h2>
 <pre>
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 import base64
 from io import BytesIO
@@ -21,29 +22,27 @@ from io import BytesIO
 departments = ["Finance", "IT", "HR", "Marketing", "Sales", "Operations"]
 regions = ["North", "South", "East", "West"]
 
-import numpy as np
 np.random.seed(42)
 df = pd.DataFrame({
     "EmployeeID": [f"E{i+1000}" for i in range(100)],
     "Department": np.random.choice(departments, size=100),
     "Region": np.random.choice(regions, size=100),
-    "PerformanceScore": np.random.randint(1,6,size=100)
+    "PerformanceScore": np.random.randint(1, 6, size=100)  # Numeric scores 1-5
 })
 
 # --- 2. Calculate IT department frequency ---
 it_count = (df["Department"] == "IT").sum()
 print(f"IT Department Count: {it_count}")
 
-# --- 3. Create a bar chart ---
+# --- 3. Create a histogram of PerformanceScore ---
 plt.figure(figsize=(8,6))
-counts = df["Department"].value_counts()
-plt.bar(counts.index, counts.values, color="skyblue")
-plt.title("Employee Distribution Across Departments")
-plt.xlabel("Department")
-plt.ylabel("Count")
+plt.hist(df["PerformanceScore"], bins=5, color='skyblue', edgecolor='black')
+plt.title("Histogram of Employee Performance Scores")
+plt.xlabel("Performance Score")
+plt.ylabel("Number of Employees")
 plt.tight_layout()
 
-# --- 4. Save plot to a BytesIO object and encode as base64 ---
+# --- 4. Save plot to PNG and encode as base64 ---
 buf = BytesIO()
 plt.savefig(buf, format="png")
 plt.close()
@@ -51,12 +50,12 @@ buf.seek(0)
 img_base64 = base64.b64encode(buf.read()).decode('utf-8')
 
 
-print("HTML report generated: employee_performance_report.html")
-23f2001691@ds.study.iitm.ac.in
+
 
 </pre>
 </body>
 </html>
+
 
 
 
